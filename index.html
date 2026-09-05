@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>География мира — тест для 12 класса</title>
+  <style>
+    :root { --ink:#172033; --muted:#667085; --paper:#fff; --bg:#f3f7fb; --blue:#1769aa; --teal:#087f79; --line:#dbe4ee; --warn:#a45d00; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:var(--bg); }
+    header { color:#fff; background:linear-gradient(120deg,#123b67,#087f79); padding:32px 20px 28px; }
+    .wrap { max-width:1000px; margin:auto; }
+    h1 { margin:0; font-size:clamp(1.65rem,4vw,2.35rem); } h2 { margin-top:0; } h3 { margin:0 0 8px; }
+    .subtitle { margin:8px 0 0; opacity:.9; }
+    main { max-width:1000px; margin:24px auto 48px; padding:0 16px; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:18px; box-shadow:0 4px 16px #1736500b; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    label { display:block; font-weight:650; margin:0 0 6px; }
+    input, textarea { width:100%; border:1px solid #b8c7d8; border-radius:8px; padding:10px 12px; font:inherit; color:inherit; background:#fff; }
+    textarea { min-height:150px; resize:vertical; }
+    button { border:0; border-radius:8px; padding:11px 16px; font:inherit; font-weight:700; cursor:pointer; background:var(--blue); color:#fff; }
+    button:hover { filter:brightness(.93); } button.secondary { background:#e6eef6; color:#173b61; } button.danger { background:#a83232; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+    .note { color:var(--muted); margin:8px 0 0; }
+    .progress { height:10px; background:#e5edf5; border-radius:99px; overflow:hidden; margin:12px 0 5px; }
+    #bar { height:100%; width:0; background:linear-gradient(90deg,#1774bc,#0a9b87); transition:width .2s; }
+    .part { margin:30px 0 14px; font-size:1.25rem; color:#0b5960; }
+    .question { scroll-margin-top:16px; }
+    .question-head { display:flex; gap:12px; align-items:flex-start; }
+    .num { flex:0 0 auto; width:32px; height:32px; display:grid; place-items:center; border-radius:50%; background:#e1f2f0; color:#076a65; font-weight:800; }
+    .topic { color:var(--muted); font-size:.87rem; margin:2px 0 12px; }
+    .options { display:grid; gap:8px; }
+    .option { display:flex; align-items:flex-start; gap:10px; border:1px solid var(--line); border-radius:9px; padding:9px 11px; font-weight:400; margin:0; cursor:pointer; }
+    .option:has(input:checked) { border-color:#4c9bd5; background:#eff8ff; }
+    .option input { width:auto; margin-top:5px; }
+    .rubric { padding:11px 13px; background:#fff8e9; border-left:4px solid #e5a129; margin-bottom:12px; font-size:.94rem; }
+    .status { font-weight:700; } #result { display:none; } .good { color:#087f4b; } .bad { color:#b42318; }
+    .review { padding:12px 0; border-top:1px solid var(--line); } .review:first-child { border-top:0; }
+    .hidden { display:none; }
+    @media (max-width:700px) { .grid { grid-template-columns:1fr; } .card { padding:17px; } }
+    @media print { body { background:#fff; } header,.setup,.actions,#result button { display:none!important; } main { margin:0; max-width:none; } .card { box-shadow:none; break-inside:avoid; } }
+  </style>
+</head>
+<body>
+<header><div class="wrap"><h1>Социально-экономическая география мира</h1><p class="subtitle">Итоговый тест для 12 класса: 40 заданий • 30 с выбором ответа • 10 развёрнутых с защитой</p></div></header>
+<main>
+  <section class="card setup" id="setup">
+    <h2>Начало работы</h2>
+    <div class="grid"><div><label for="student">Фамилия и имя</label><input id="student" placeholder="Например, Анна Попеску"></div><div><label for="grade">Класс / группа</label><input id="grade" placeholder="12 «А»"></div><div><label for="teacher">Учитель</label><input id="teacher" placeholder="Необязательно"></div></div>
+    <p class="note">На выполнение отводится 90 минут. Выберите один вариант в тестовых вопросах. Развёрнутые ответы сохраняются на этом устройстве, пока открыта страница.</p>
+    <div class="actions"><button type="button" id="start">Начать тест</button><button type="button" class="secondary" id="load">Загрузить черновик</button></div>
+  </section>
+  <section id="test" class="hidden">
+    <div class="card"><div class="status" id="welcome">Тест</div><div class="progress" role="progressbar" aria-label="Заполнено заданий" aria-valuemin="0" aria-valuemax="40"><div id="bar"></div></div><div id="progressText" class="note">Заполнено: 0 из 40</div><div class="actions"><button type="button" class="secondary" id="save">Сохранить черновик</button><button type="button" class="secondary" onclick="window.print()">Распечатать</button><button type="button" id="finish">Завершить и проверить</button></div></div>
+    <form id="quiz"></form>
+  </section>
+  <section id="result" class="card" aria-live="polite"></section>
+</main>
+<script>
+const mcq = [
+['Типология стран','Какой показатель чаще всего применяют для сопоставления уровня социально-экономического развития стран?',['Плотность населения','ВВП на душу населения','Площадь территории','Длина границ','Количество часовых поясов'],1],
+['Типология стран','Какая страна относится к группе новых индустриальных стран Азии?',['Непал','Республика Корея','Афганистан','Йемен','Монголия'],1],
+['Население и урбанизация','Как называется рост доли городского населения?',['Субурбанизация','Урбанизация','Депопуляция','Миграция','Агломерация'],1],
+['Мировое хозяйство','Что характеризует международное географическое разделение труда?',['Самообеспечение всех стран','Специализацию стран на отдельных товарах и услугах','Отказ от торговли','Только внутренние перевозки','Единый климат всех стран'],1],
+['Топливная промышленность','Какой ресурс относится к невозобновимым топливно-энергетическим ресурсам?',['Солнечная энергия','Энергия приливов','Каменный уголь','Энергия ветра','Геотермальная энергия'],2],
+['Электроэнергетика','Для размещения ГЭС решающими являются прежде всего:',['Запасы железной руды','Многоводные реки и перепад высот','Близость хлопковых полей','Наличие морских курортов','Плотность автодорог'],1],
+['Чёрная металлургия','Основным сырьём для выплавки чугуна служит:',['Боксит','Железная руда','Фосфорит','Калийная соль','Древесина'],1],
+['Цветная металлургия','Какой металл получают из бокситов?',['Медь','Алюминий','Свинец','Цинк','Никель'],1],
+['Машиностроение','Какая отрасль наиболее наукоёмка?',['Сборка простых игрушек','Микроэлектроника','Добыча песка','Лесозаготовка','Мукомольная промышленность'],1],
+['Химическая промышленность','К какой продукции относится производство минеральных удобрений?',['Лёгкая промышленность','Химическая промышленность','Лесная промышленность','Пищевая промышленность','Чёрная металлургия'],1],
+['Лесная промышленность','Какой фактор особенно важен для целлюлозно-бумажного производства?',['Близость запасов древесины и воды','Высота гор','Число аэропортов','Наличие виноградников','Длина пляжей'],0],
+['Лёгкая промышленность','Какая отрасль относится к лёгкой промышленности?',['Текстильная','Нефтеперерабатывающая','Сталелитейная','Цементная','Электроэнергетика'],0],
+['Пищевая промышленность','Наиболее выраженную ориентацию на потребителя имеет:',['Сахарная промышленность','Хлебопекарная промышленность','Добыча угля','Производство алюминия','Лесопиление'],1],
+['Растениеводство','Главные районы выращивания риса находятся преимущественно в:',['Восточной и Юго-Восточной Азии','Северной Европе','Сахаре','Антарктиде','Арктике'],0],
+['Растениеводство','Какую культуру относят к тонизирующим?',['Картофель','Чай','Пшеница','Свёкла','Кукуруза'],1],
+['Животноводство','Какой тип животноводства характерен для засушливых пастбищ?',['Оленеводство в тундре','Отгонно-пастбищное овцеводство','Прудовое рыбоводство','Птицеводство в городах','Шелководство'],1],
+['Сельское хозяйство','Зелёная революция прежде всего связана с:',['Полным отказом от техники','Внедрением высокоурожайных сортов и технологий','Сокращением орошения','Запретом удобрений','Переносом полей в города'],1],
+['Агроклиматические ресурсы','Что входит в агроклиматические ресурсы территории?',['Только полезные ископаемые','Тепло, влага и свет для растений','Только леса','Только население','Порты и дороги'],1],
+['Земельные ресурсы','Как называется ухудшение земель из-за выдувания или смыва почвы?',['Мелиорация','Эрозия','Урбанизация','Рекультивация','Интеграция'],1],
+['Водные ресурсы','Какая отрасль обычно является крупным потребителем пресной воды?',['Орошаемое земледелие','Морской туризм','Воздушный транспорт','Космическая связь','Ювелирное дело'],0],
+['Биологические ресурсы','К биологическим ресурсам относятся:',['Уголь и нефть','Растительный и животный мир','Гранит и песок','Солнечный свет','Воздушные массы'],1],
+['Мировой океан','Какое последствие имеет чрезмерный вылов рыбы?',['Увеличение биоразнообразия','Истощение рыбных запасов','Рост плодородия почв','Образование руд','Ускорение ледников'],1],
+['Транспорт','Какой транспорт наиболее выгоден для массовых межконтинентальных грузов?',['Автомобильный','Морской','Трамвайный','Вертолётный','Трубопроводный'],1],
+['Международная торговля','Экспорт — это:',['Ввоз товаров в страну','Вывоз товаров и услуг из страны','Переработка отходов','Внутренний туризм','Перепись населения'],1],
+['Глобальные проблемы','Какой пример относится к глобальным экологическим проблемам?',['Смена расписания автобуса','Изменение климата','Ремонт одного дома','Открытие магазина','Переименование улицы'],1],
+['Туризм','Какая страна традиционно относится к крупным центрам международного туризма Средиземноморья?',['Италия','Чад','Нигер','Монголия','Парагвай'],0],
+['Региональная география','Какая страна является крупнейшей по численности населения в Южной Америке?',['Аргентина','Бразилия','Чили','Перу','Уругвай'],1],
+['Международные организации','Какова основная цель ООН?',['Управление частными фирмами','Поддержание мира и международного сотрудничества','Установление мировых цен на хлеб','Управление портами','Выдача водительских прав'],1],
+['Устойчивое развитие','Что соответствует принципу устойчивого развития?',['Использовать ресурсы без ограничений','Учитывать потребности будущих поколений','Отказаться от образования','Увеличивать отходы','Осваивать только невозобновимые ресурсы'],1],
+['Сфера услуг','Что относится к третичному сектору экономики?',['Добыча нефти','Выращивание пшеницы','Банковские и образовательные услуги','Выплавка стали','Лесозаготовка'],2]
+];
+const openQ = [
+['Комплексный анализ','Сравните две страны: одну высокоразвитую и одну развивающуюся. Покажите минимум 3 различия по структуре хозяйства, ВВП на душу населения, занятости или качеству жизни.','Назовите страны; приведите не менее трёх корректных сравнений; сделайте вывод.'],
+['Промышленность','Объясните, почему предприятия чёрной металлургии могут размещаться у сырья, топлива или крупных портов. Приведите два реальных примера стран/районов.','Раскрыты факторы размещения; приведены 2 примера; использованы географические термины.'],
+['Энергетика','Предложите энергобаланс для страны с богатыми реками, ограниченными запасами топлива и растущими городами. Обоснуйте выбор источников энергии.','Есть ГЭС как основа; учтены резервные/возобновляемые источники; названы экологические и экономические аргументы.'],
+['Сельское хозяйство','Разработайте специализацию сельского хозяйства для территории с тёплым влажным летом, плодородными почвами и близким крупным городом.','Связаны условия и культуры/животноводство; учтён рынок сбыта; есть обоснование.'],
+['Агроклиматические ресурсы','Объясните, как дефицит влаги влияет на растениеводство. Предложите не менее трёх мер адаптации.','Объяснены последствия; предложены 3 выполнимые меры (орошение, сорта, агротехника и др.).'],
+['Биологические ресурсы','Составьте план охраны биологических ресурсов Мирового океана от перелова и загрязнения.','Есть меры регулирования вылова, охраны акваторий, контроля загрязнения и международного сотрудничества.'],
+['Лёгкая и пищевая промышленность','Сравните факторы размещения текстильной и хлебопекарной промышленности. Чем объясняются различия?','Указаны сырьё/рабочая сила/потребитель для текстиля и близость к потребителю для хлебопечения; есть вывод.'],
+['Глобализация','На примере одного товара проследите международную производственную цепочку: сырьё — изготовление — транспорт — потребитель.','Выбран товар; названы все звенья и страны/регионы; показана роль МГРТ.'],
+['Экологические проблемы','Выберите одну отрасль промышленности и оцените её воздействие на природу. Предложите 3 способа уменьшить ущерб.','Названы конкретные воздействия; есть 3 реалистичные меры; дан краткий вывод.'],
+['Защита проекта','Подготовьте мини-защиту: «Как повысить устойчивость хозяйства выбранной страны/региона». План: проблема, ресурсы, 3 решения, ожидаемый результат и риски.','Логичная структура; опора на географические особенности; 3 решения; упомянуты результат и риски.']
+];
+const quiz=document.getElementById('quiz');
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+ let out='<h2 class="part">Часть I. Выберите один правильный ответ (1–30)</h2>';
+ mcq.forEach((q,i)=>{out+=`<article class="card question" id="q${i+1}"><div class="question-head"><span class="num">${i+1}</span><div><h3>${q[1]}</h3><div class="topic">${q[0]}</div></div></div><div class="options">${q[2].map((o,j)=>`<label class="option"><input type="radio" name="q${i+1}" value="${j}"><span>${String.fromCharCode(65+j)}. ${o}</span></label>`).join('')}</div></article>`});
+ out+='<h2 class="part">Часть II. Развёрнутые ответы и защита (31–40)</h2><p class="note">Пишите развёрнуто: факты, примеры, термины и собственный вывод. Каждый ответ оценивается учителем по критериям.</p>';
+ openQ.forEach((q,i)=>{let n=i+31;out+=`<article class="card question" id="q${n}"><div class="question-head"><span class="num">${n}</span><div><h3>${q[1]}</h3><div class="topic">${q[0]}</div></div></div><div class="rubric"><strong>Критерии защиты:</strong> ${q[2]}</div><label for="a${n}">Ваш ответ / тезисы для устной защиты</label><textarea id="a${n}" data-open="${n}" placeholder="Напишите ответ здесь…"></textarea></article>`});
+ quiz.innerHTML=out;
+ quiz.addEventListener('input',update); quiz.addEventListener('change',update);
+}
+function count(){let n=0;for(let i=1;i<=30;i++)if(document.querySelector(`input[name=q${i}]:checked`))n++;for(let i=31;i<=40;i++)if(document.getElementById('a'+i).value.trim())n++;return n;}
+function update(){let n=count();document.getElementById('bar').style.width=(n/40*100)+'%';document.getElementById('progressText').textContent=`Заполнено: ${n} из 40`;}
+function save(){const data={student:student.value,grade:grade.value,teacher:teacher.value,answers:{},open:{}};for(let i=1;i<=30;i++){let v=document.querySelector(`input[name=q${i}]:checked`);if(v)data.answers[i]=v.value;}for(let i=31;i<=40;i++)data.open[i]=document.getElementById('a'+i).value;localStorage.setItem('geoWorldTest12',JSON.stringify(data));alert('Черновик сохранён в браузере этого устройства.');}
+function load(){let raw=localStorage.getItem('geoWorldTest12');if(!raw)return alert('Сохранённый черновик не найден.');let d=JSON.parse(raw);student.value=d.student||'';grade.value=d.grade||'';teacher.value=d.teacher||'';document.getElementById('start').click();Object.entries(d.answers||{}).forEach(([i,v])=>{let el=document.querySelector(`input[name=q${i}][value="${v}"]`);if(el)el.checked=true;});Object.entries(d.open||{}).forEach(([i,v])=>{let el=document.getElementById('a'+i);if(el)el.value=v;});update();}
+document.getElementById('start').onclick=()=>{render();setup.classList.add('hidden');test.classList.remove('hidden');welcome.textContent=`Ученик: ${student.value||'не указан'} • Класс: ${grade.value||'не указан'}`;update();window.scrollTo({top:document.getElementById('test').offsetTop-12,behavior:'smooth'});};
+document.getElementById('load').onclick=load; document.getElementById('save').onclick=save;
+document.getElementById('finish').onclick=()=>{let correct=0, rows='';mcq.forEach((q,i)=>{let n=i+1, v=document.querySelector(`input[name=q${n}]:checked`), ok=v&&+v.value===q[3];if(ok)correct++;rows+=`<div class="review"><strong>Задание ${n}:</strong> <span class="${ok?'good':'bad'}">${ok?'верно':'неверно / нет ответа'}</span>. Правильный ответ: ${String.fromCharCode(65+q[3])} — ${q[2][q[3]]}</div>`;});let written=count()-[...Array(30)].filter((_,i)=>document.querySelector(`input[name=q${i+1}]:checked`)).length;result.innerHTML=`<h2>Предварительный результат</h2><p><strong>Тестовая часть: ${correct} из 30.</strong> Развёрнутых ответов заполнено: ${written} из 10. Итоговую оценку за часть II выставляет учитель после проверки и устной защиты.</p><div class="actions"><button type="button" class="secondary" id="toggleReview">Показать разбор тестовой части</button><button type="button" id="saveResult">Сохранить черновик</button></div><div id="review" class="hidden"><h3 style="margin-top:18px">Разбор</h3>${rows}</div>`;result.style.display='block';document.getElementById('toggleReview').onclick=()=>document.getElementById('review').classList.toggle('hidden');document.getElementById('saveResult').onclick=save;result.scrollIntoView({behavior:'smooth'});};
+</script>
+</body>
+</html>
