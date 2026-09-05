@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тестирование по географии — Туманов Дмитрий Алексеевич</title>
+  <style>
+    :root { --navy:#082d4c; --blue:#126eaa; --sky:#dff3fb; --teal:#00a58b; --sand:#ffd983; --ink:#10243a; --muted:#5a6b7d; --paper:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; background:#f5fafb; }
+    .hero { overflow:hidden; position:relative; min-height:440px; color:#fff; background:radial-gradient(circle at 82% 20%,#287eb4 0 6%,transparent 25%),linear-gradient(130deg,#062b4b 0%,#095c88 55%,#00a58b 150%); }
+    .hero::before { content:""; position:absolute; inset:0; opacity:.22; background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px); background-size:54px 54px; transform:perspective(450px) rotateX(55deg) scale(1.5); transform-origin:top; }
+    .wrap { position:relative; width:min(1120px,calc(100% - 40px)); margin:auto; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:24px 0; border-bottom:1px solid #ffffff33; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:750; letter-spacing:.01em; }
+    .pin { display:grid; place-items:center; width:34px; height:34px; border-radius:50%; color:var(--navy); background:var(--sand); font-size:19px; }
+    .tag { margin:0; padding:5px 10px; border:1px solid #ffffff63; border-radius:999px; font-size:.82rem; }
+    .hero-content { display:grid; grid-template-columns:1.15fr .85fr; align-items:center; min-height:350px; gap:36px; padding:34px 0 54px; }
+    .eyebrow { margin:0 0 12px; color:#b9f7eb; font-size:.84rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    h1 { max-width:650px; margin:0; font-size:clamp(2.25rem,5vw,4.5rem); line-height:1.03; letter-spacing:-.04em; }
+    .lead { max-width:610px; margin:19px 0 0; color:#e0f3fa; font-size:clamp(1rem,2vw,1.2rem); }
+    .globe { justify-self:center; position:relative; width:245px; height:245px; border:3px solid #d7f4f5; border-radius:50%; background:radial-gradient(circle at 30% 28%,#9ae7ef,#177eb1 50%,#075278); box-shadow:0 0 0 13px #ffffff12,0 22px 44px #001a2b73; }
+    .globe::before,.globe::after { content:""; position:absolute; inset:13px; border:1px solid #e6ffff96; border-radius:50%; }
+    .globe::before { transform:scaleX(.45); }.globe::after { transform:scaleY(.45); }
+    .meridian { position:absolute; left:50%; top:0; width:1px; height:100%; background:#e6ffff8c; transform:translateX(-50%); }
+    .continent { position:absolute; border-radius:53% 47% 45% 55% / 58% 43% 57% 42%; background:#5bd38e; opacity:.92; }
+    .c1 { width:81px; height:52px; left:39px; top:59px; transform:rotate(-18deg); }.c2 { width:56px; height:95px; left:95px; top:93px; transform:rotate(22deg); }.c3 { width:57px; height:38px; right:29px; top:56px; transform:rotate(12deg); }
+    main { width:min(1120px,calc(100% - 40px)); margin:0 auto; padding:44px 0 56px; }
+    .intro { display:flex; justify-content:space-between; gap:26px; align-items:end; margin-bottom:24px; }.intro h2 { margin:0; font-size:clamp(1.6rem,3vw,2.25rem); line-height:1.15; }.intro p { max-width:500px; margin:0; color:var(--muted); }
+    .tests { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }.test { position:relative; overflow:hidden; padding:29px; min-height:225px; border:1px solid #d5e4eb; border-radius:18px; background:#fff; box-shadow:0 8px 22px #0c426010; text-decoration:none; color:var(--ink); transition:transform .18s,box-shadow .18s; }.test:hover { transform:translateY(-4px); box-shadow:0 14px 28px #0c426025; }.test::after { content:""; position:absolute; right:-38px; bottom:-45px; width:160px; height:160px; border:24px solid #d7f1f1; border-radius:50%; }.test.twelve::after { border-color:#e7e4ff; }.number { display:grid; place-items:center; width:45px; height:45px; border-radius:12px; color:#fff; background:linear-gradient(135deg,#087f79,#00a58b); font-weight:800; font-size:1.15rem; }.twelve .number { background:linear-gradient(135deg,#2750a9,#5179d2); }.test h3 { margin:17px 0 7px; font-size:1.45rem; }.test p { max-width:310px; margin:0; color:var(--muted); }.go { position:absolute; bottom:24px; left:29px; color:var(--blue); font-weight:800; }.facts { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:22px; }.fact { padding:17px; border-radius:13px; background:#eaf6f7; }.fact b { display:block; color:var(--teal); font-size:1.25rem; }.fact span { color:var(--muted); font-size:.92rem; } footer { padding:25px 0 40px; text-align:center; color:#647789; font-size:.92rem; } footer b { color:var(--navy); }
+    @media(max-width:700px) { .tag{display:none}.hero-content,.tests{grid-template-columns:1fr}.hero-content{padding-top:40px}.globe{display:none}.intro{display:block}.intro p{margin-top:12px}.facts{grid-template-columns:1fr}.test{min-height:205px} }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="wrap">
+      <header><div class="brand"><span class="pin">⌖</span> География</div><p class="tag">Образовательный сайт</p></header>
+      <div class="hero-content">
+        <div><p class="eyebrow">Учебное пространство</p><h1>Тестирование<br>по географии</h1><p class="lead">Интерактивные задания для проверки знаний, географического мышления и умения рассуждать.</p></div>
+        <div class="globe" aria-hidden="true"><i class="meridian"></i><i class="continent c1"></i><i class="continent c2"></i><i class="continent c3"></i></div>
+      </div>
+    </div>
+  </section>
+  <main>
+    <div class="intro"><h2>Выберите свой класс</h2><p>После выбора заполните свои данные и приступайте к выполнению заданий. Результат будет отправлен учителю.</p></div>
+    <nav class="tests" aria-label="Выбор теста">
+      <a class="test" href="test-11.html"><span class="number">11</span><h3>Тест для 11 класса</h3><p>Физическая география: оболочки Земли, климат, часовые пояса и координаты.</p><span class="go">Перейти к тесту →</span></a>
+      <a class="test twelve" href="test-12.html"><span class="number">12</span><h3>Тест для 12 класса</h3><p>Социально-экономическая география мира и задания с развёрнутым ответом.</p><span class="go">Перейти к тесту →</span></a>
+    </nav>
+    <section class="facts" aria-label="О тестировании"><div class="fact"><b>2</b><span>теста по программе</span></div><div class="fact"><b>40</b><span>заданий в каждом тесте</span></div><div class="fact"><b>Онлайн</b><span>результаты для учителя</span></div></section>
+  </main>
+  <footer>Сайт <b>Туманова Дмитрия Алексеевича</b> · Тестирование по географии</footer>
+</body>
+</html>
