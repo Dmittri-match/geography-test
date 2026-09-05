@@ -48,7 +48,11 @@
     <h2> Желаю удачи!!!</h2>
     <div class="grid"><div><label for="student">Фамилия и имя</label><input id="student" placeholder="Например, Анна Попеску"></div><div><label for="grade">Класс / группа</label><input id="grade" placeholder="12 «А»"></div><div><label for="teacher">Учитель</label><input id="teacher" placeholder="Необязательно"></div></div>
     <p class="note">На выполнение отводится 35 минут. </p>
-    <div class="actions"><button type="button" id="start">Начать тест</button><button type="button" class="secondary" id="load">Загрузить черновик</button></div>
+    <div class="actions">
+  <button type="button" id="start">Начать тест</button>
+  <button type="button" class="secondary" id="load">Загрузить черновик</button>
+  <button type="button" class="secondary" onclick="location.href='test-11.html'">Тест для 11 класса</button>
+</div>
   </section>
   <section id="test" class="hidden">
     <div class="card"><div class="status" id="welcome">Тест</div><div class="progress" role="progressbar" aria-label="Заполнено заданий" aria-valuemin="0" aria-valuemax="40"><div id="bar"></div></div><div id="progressText" class="note">Заполнено: 0 из 40</div><div class="actions"><button type="button" class="secondary" id="save">Сохранить черновик</button><button type="button" class="secondary" onclick="window.print()">Распечатать</button><button type="button" id="finish">Завершить и проверить</button></div></div>
