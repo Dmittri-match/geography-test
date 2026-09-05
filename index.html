@@ -42,12 +42,12 @@
   </style>
 </head>
 <body>
-<header><div class="wrap"><h1>Социально-экономическая география мира</h1><p class="subtitle"> Предварительное тестирование за 11 класс: текущий 12 класс</p></div></header>
+<header><div class="wrap"><h1>Социально-экономическая география мира</h1><p class="subtitle">Итоговый тест для 12 класса: 40 заданий • 30 с выбором ответа • 10 развёрнутых с защитой</p></div></header>
 <main>
   <section class="card setup" id="setup">
     <h2>Начало работы</h2>
     <div class="grid"><div><label for="student">Фамилия и имя</label><input id="student" placeholder="Например, Анна Попеску"></div><div><label for="grade">Класс / группа</label><input id="grade" placeholder="12 «А»"></div><div><label for="teacher">Учитель</label><input id="teacher" placeholder="Необязательно"></div></div>
-    <p class="note">На выполнение отводится 30 минут. </p>
+    <p class="note">На выполнение отводится 90 минут. Выберите один вариант в тестовых вопросах. Развёрнутые ответы сохраняются на этом устройстве, пока открыта страница.</p>
     <div class="actions"><button type="button" id="start">Начать тест</button><button type="button" class="secondary" id="load">Загрузить черновик</button></div>
   </section>
   <section id="test" class="hidden">
@@ -57,6 +57,9 @@
   <section id="result" class="card" aria-live="polite"></section>
 </main>
 <script>
+/* Вставьте сюда URL веб-приложения Google Apps Script после его публикации. */
+const RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwEx4L2xpUpMwY5-NCZQHCWkR2my9HaICQrsi0GtVLAw7idBSipD6K4IVsByYFijfB6/exec';
+
 const mcq = [
 ['Типология стран','Какой показатель чаще всего применяют для сопоставления уровня социально-экономического развития стран?',['Плотность населения','ВВП на душу населения','Площадь территории','Длина границ','Количество часовых поясов'],1],
 ['Типология стран','Какая страна относится к группе новых индустриальных стран Азии?',['Непал','Республика Корея','Афганистан','Йемен','Монголия'],1],
@@ -114,10 +117,24 @@ function render(){
 function count(){let n=0;for(let i=1;i<=30;i++)if(document.querySelector(`input[name=q${i}]:checked`))n++;for(let i=31;i<=40;i++)if(document.getElementById('a'+i).value.trim())n++;return n;}
 function update(){let n=count();document.getElementById('bar').style.width=(n/40*100)+'%';document.getElementById('progressText').textContent=`Заполнено: ${n} из 40`;}
 function save(){const data={student:student.value,grade:grade.value,teacher:teacher.value,answers:{},open:{}};for(let i=1;i<=30;i++){let v=document.querySelector(`input[name=q${i}]:checked`);if(v)data.answers[i]=v.value;}for(let i=31;i<=40;i++)data.open[i]=document.getElementById('a'+i).value;localStorage.setItem('geoWorldTest12',JSON.stringify(data));alert('Черновик сохранён в браузере этого устройства.');}
+async function sendResults(score){
+  if(!RESULTS_ENDPOINT.startsWith('https://script.google.com/macros/s/')){alert('Учитель ещё не подключил сбор результатов.');return;}
+  const answers={}, written={};
+  for(let i=1;i<=30;i++){const value=document.querySelector(`input[name=q${i}]:checked`);answers[i]=value?String.fromCharCode(65+Number(value.value)):'';}
+  for(let i=31;i<=40;i++) written[i]=document.getElementById('a'+i).value.trim();
+  const payload={student:student.value.trim(),grade:grade.value.trim(),teacher:teacher.value.trim(),score,answers,written,submittedAt:new Date().toISOString()};
+  const button=document.getElementById('sendResult');
+  button.disabled=true; button.textContent='Отправляем…';
+  try{
+    await fetch(RESULTS_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({payload:JSON.stringify(payload)})});
+    button.textContent='Результат отправлен';
+    document.getElementById('sendStatus').textContent='Готово: результат отправлен учителю.';
+  }catch(error){button.disabled=false;button.textContent='Повторить отправку';document.getElementById('sendStatus').textContent='Не удалось отправить. Проверьте подключение к интернету и повторите.';}
+}
 function load(){let raw=localStorage.getItem('geoWorldTest12');if(!raw)return alert('Сохранённый черновик не найден.');let d=JSON.parse(raw);student.value=d.student||'';grade.value=d.grade||'';teacher.value=d.teacher||'';document.getElementById('start').click();Object.entries(d.answers||{}).forEach(([i,v])=>{let el=document.querySelector(`input[name=q${i}][value="${v}"]`);if(el)el.checked=true;});Object.entries(d.open||{}).forEach(([i,v])=>{let el=document.getElementById('a'+i);if(el)el.value=v;});update();}
 document.getElementById('start').onclick=()=>{render();setup.classList.add('hidden');test.classList.remove('hidden');welcome.textContent=`Ученик: ${student.value||'не указан'} • Класс: ${grade.value||'не указан'}`;update();window.scrollTo({top:document.getElementById('test').offsetTop-12,behavior:'smooth'});};
 document.getElementById('load').onclick=load; document.getElementById('save').onclick=save;
-document.getElementById('finish').onclick=()=>{let correct=0, rows='';mcq.forEach((q,i)=>{let n=i+1, v=document.querySelector(`input[name=q${n}]:checked`), ok=v&&+v.value===q[3];if(ok)correct++;rows+=`<div class="review"><strong>Задание ${n}:</strong> <span class="${ok?'good':'bad'}">${ok?'верно':'неверно / нет ответа'}</span>. Правильный ответ: ${String.fromCharCode(65+q[3])} — ${q[2][q[3]]}</div>`;});let written=count()-[...Array(30)].filter((_,i)=>document.querySelector(`input[name=q${i+1}]:checked`)).length;result.innerHTML=`<h2>Предварительный результат</h2><p><strong>Тестовая часть: ${correct} из 30.</strong> Развёрнутых ответов заполнено: ${written} из 10. Итоговую оценку за часть II выставляет учитель после проверки и устной защиты.</p><div class="actions"><button type="button" class="secondary" id="toggleReview">Показать разбор тестовой части</button><button type="button" id="saveResult">Сохранить черновик</button></div><div id="review" class="hidden"><h3 style="margin-top:18px">Разбор</h3>${rows}</div>`;result.style.display='block';document.getElementById('toggleReview').onclick=()=>document.getElementById('review').classList.toggle('hidden');document.getElementById('saveResult').onclick=save;result.scrollIntoView({behavior:'smooth'});};
+document.getElementById('finish').onclick=()=>{let correct=0, rows='';mcq.forEach((q,i)=>{let n=i+1, v=document.querySelector(`input[name=q${n}]:checked`), ok=v&&+v.value===q[3];if(ok)correct++;rows+=`<div class="review"><strong>Задание ${n}:</strong> <span class="${ok?'good':'bad'}">${ok?'верно':'неверно / нет ответа'}</span>. Правильный ответ: ${String.fromCharCode(65+q[3])} — ${q[2][q[3]]}</div>`;});let written=count()-[...Array(30)].filter((_,i)=>document.querySelector(`input[name=q${i+1}]:checked`)).length;const sendButton=RESULTS_ENDPOINT.startsWith('https://script.google.com/macros/s/')?`<button type="button" id="sendResult">Отправить результат учителю</button><span id="sendStatus" class="note"></span>`:'';result.innerHTML=`<h2>Предварительный результат</h2><p><strong>Тестовая часть: ${correct} из 30.</strong> Развёрнутых ответов заполнено: ${written} из 10. Итоговую оценку за часть II выставляет учитель после проверки и устной защиты.</p><div class="actions"><button type="button" class="secondary" id="toggleReview">Показать разбор тестовой части</button><button type="button" id="saveResult">Сохранить черновик</button>${sendButton}</div><div id="review" class="hidden"><h3 style="margin-top:18px">Разбор</h3>${rows}</div>`;result.style.display='block';document.getElementById('toggleReview').onclick=()=>document.getElementById('review').classList.toggle('hidden');document.getElementById('saveResult').onclick=save;if(document.getElementById('sendResult'))document.getElementById('sendResult').onclick=()=>sendResults(correct);result.scrollIntoView({behavior:'smooth'});};
 </script>
 </body>
 </html>
